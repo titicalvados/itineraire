@@ -3,7 +3,7 @@ Ce dépôt GIT contient le code utilisé dans le cadre de notre projet école it
 To be completed later
 
 
-2023/06/19
+2023/06/19 :
 répertoire 'graph':
 premiers éléments pour initialiser un graphe des communes métropolitaines
 
