@@ -23,31 +23,31 @@ premiers éléments pour initialiser un graphe des communes métropolitaines
   Une ligne de ce fichier correspond à une commune et contient la liste des communes voisines 
   (de longueur variable pour chaque commune) :
 
-    com1 , ... , com1_voisine1|com1_voisne2|com1_voisine3, ...
-    com2 , ... , com2_voisine1|com2_voisne2 , ...
-    com3 , ... , com3_voisine1|com3_voisne2|com3_voisine3|com3_voisine4|com3_voisine5|com3_voisine6 , ...
-    com4 , ... , com4_voisine1|com4_voisne2|com4_voisine3|com4_voisine4|com4_voisine5 , ...
+    - com1 , ... , com1_voisine1|com1_voisne2|com1_voisine3, ...
+    - com2 , ... , com2_voisine1|com2_voisne2 , ...
+    - com3 , ... , com3_voisine1|com3_voisne2|com3_voisine3|com3_voisine4|com3_voisine5|com3_voisine6 , ...
+    - com4 , ... , com4_voisine1|com4_voisne2|com4_voisine3|com4_voisine4|com4_voisine5 , ...
     ...
 
   Un pré-traitement de ce fichier pour le simplifier est nécessaire et ne garder qu'un couple par ligne
   (et se passer des autres informations)
 
-    com1 , com1_voisine1
-    com1 , com1_voisine2
-    com1 , com1_voisine3
-    com2 , com2_voisine1
-    com2 , com2_voisine2
-    com3 , com3_voisine1
-    com3 , com3_voisine2
-    com3 , com3_voisine3
-    com3 , com3_voisine4
-    com3 , com3_voisine5
-    com3 , com3_voisine6
-    com4 , com4_voisine1
-    com4 , com4_voisine2
-    com4 , com4_voisine3
-    com4 , com4_voisine4
-    com4 , com4_voisine5
+    - com1 , com1_voisine1
+    - com1 , com1_voisine2
+    - com1 , com1_voisine3
+    - com2 , com2_voisine1
+    - com2 , com2_voisine2
+    - com3 , com3_voisine1
+    - com3 , com3_voisine2
+    - com3 , com3_voisine3
+    - com3 , com3_voisine4
+    - com3 , com3_voisine5
+    - com3 , com3_voisine6
+    - com4 , com4_voisine1
+    - com4 , com4_voisine2
+    - com4 , com4_voisine3
+    - com4 , com4_voisine4
+    - com4 , com4_voisine5
     ...
  
     C'est le rôle du script 'preprocess_communes_adjacentes.py'
@@ -72,4 +72,5 @@ Les autres listes de communes :
 - liste_communes_5000.csv
 - liste_communes_10000.csv
 - liste_communes_toutes.csv
+  
 sont des listes plus ou moins longues pour tester la vitesse de chargement de la base. 
