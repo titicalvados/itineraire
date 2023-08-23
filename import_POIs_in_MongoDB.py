@@ -94,8 +94,6 @@ for file in files:
     clean_data["longitude"] = float(clean_data["isLocatedAt"][0]["schema:geo"]["schema:longitude"])
     clean_data["latitude"] = float(clean_data["isLocatedAt"][0]["schema:geo"]["schema:latitude"])
 
-    #clean_data["location"] =  [clean_data["longitude"],clean_data["latitude"]]
-    #clean_data["type"] = "Point"
     if (180>=clean_data["longitude"]>=-180) and (90>= clean_data["latitude"]>=-90):
         clean_data["location"]={"type":"Point","coordinates": [clean_data["longitude"],clean_data["latitude"]]}
     else:
