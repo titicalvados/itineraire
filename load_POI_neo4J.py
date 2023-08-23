@@ -1,8 +1,6 @@
 import json, os 
-from bson import json_util
 from fnmatch import fnmatch
 from pymongo import MongoClient
-from neo4j import GraphDatabase
 from time import time
 
 
@@ -12,79 +10,101 @@ client = MongoClient(host="127.0.0.1", port = 27017)
 
 datatourisme = client["datatourisme"]
 
-collection_poi = datatourisme.get_collection(name="poi")
+#col = datatourisme.create_collection(name="poi")
+col = datatourisme.get_collection(name="poi")
+col.drop()
+col = datatourisme.create_collection(name="poi")
 
-#get POIs from mongo
-nb_poi = collection_poi.count_documents({})
-print("Nombre de POIs: ",nb_poi)
-
-
-
-
-pois = collection_poi.aggregate([{'$project': { 'identifier': '$dc:identifier','label': '$label','types': '$types','locality': '$addressLocality','postalCode':'$postalCode','latitude':'$latitude','longitude':'$longitude'}}])
-
-#for poi in pois:
-#    print(poi)
-
-#neo4j driver
-driver_neo4j = GraphDatabase.driver('bolt://0.0.0.0:7687',
-                              auth=('neo4j', 'neo4j'))
+root = "data/POI_Bretagne/objects"
+pattern ="*.json"
 
 
-#clean neo4j database
-query = ''' 
-MATCH (n)
-DETACH DELETE n
-'''
+# get files
+files = []
+for (path, subdirs, file_names) in os.walk(root):
+    for name in file_names:
+        if fnmatch(name,pattern):
+            files.append(os.path.join(path,name))
 
-with driver_neo4j.session() as session:
-    result = session.run(query).data()
+# read file in files
+for file in files:
 
-print(result)
+    with open(file, 'r') as myfile:
+        content=myfile.read()
 
-selectedTypes = ["AccommodationProduct","Visit","Rental","Store","Accommodation","FoodEstablishment","EntertainmentAndEvent","SportsAndLeisurePlace","CulturalSite","Tour","CampingAndCaravanning","ReligiousSite","NaturalHeritage","TouristInformationCenter"]
+    # parse file
+    data = json.loads(content)
+
+    #keep only useful data
+    clean_data = {i: data[i] for i in ["dc:identifier","isLocatedAt"]}
+    clean_data["types"] = data["@type"]
+    clean_data["label"] = data["rdfs:label"]["fr"][0]
+    if "rdfs:comment" in data:
+        if "fr" in data["rdfs:comment"]:
+            clean_data["comment"] = data["rdfs:comment"]["fr"][0]
+    
+    if "hasAudience" in data:
+        if "rdfs:label" in data["hasAudience"][0]:
+            if "fr" in data["hasAudience"][0]["rdfs:label"]:
+                clean_data["audience"] =  data["hasAudience"][0]["rdfs:label"]["fr"][0]
+    
+    if "hasDescription" in data:
+       if "dc:description" in data["hasDescription"][0]:
+           if "fr" in data["hasDescription"][0]["dc:description"]:
+               clean_data["shortDescription"] = data["hasDescription"][0]["dc:description"]["fr"][0]
+    
+    if "hasContact" in data:
+        if "schema:email" in data["hasContact"][0]:
+            clean_data["email"] = data["hasContact"][0]["schema:email"][0]
+        if "schema:telephone" in data["hasContact"][0]:
+            clean_data["telephone1"] = data["hasContact"][0]["schema:telephone"][0]
+            if len(data["hasContact"][0]["schema:telephone"])==2:
+                clean_data["telephone2"] = data["hasContact"][0]["schema:telephone"][1]
+        if "foaf:homepage" in data["hasContact"][0]:
+            clean_data["web"] = data["hasContact"][0]["foaf:homepage"][0]
+        if "schema:address" in data["hasContact"][0]:
+            if "schema:addressLocality" in data["hasContact"][0]["schema:address"][0]:
+                clean_data["locality"] = data["hasContact"][0]["schema:address"][0]["schema:addressLocality"]
+            if "schema:postalCode" in data["hasContact"][0]["schema:address"][0]:
+                clean_data["postalCode"] = data["hasContact"][0]["schema:address"][0]["schema:postalCode"]
+            if "schema:streetAddress" in data["hasContact"][0]["schema:address"][0]:
+                clean_data["streetAddress1"] = data["hasContact"][0]["schema:address"][0]["schema:streetAddress"][0]
+                if len(data["hasContact"][0]["schema:address"][0]["schema:streetAddress"])==2:
+                    clean_data["streetAddress2"] = data["hasContact"][0]["schema:address"][0]["schema:streetAddress"][1]
+
+    if "offers" in data:
+       if "schema:priceSpecification" in data["offers"][0]:
+           if "schema:price" in data["offers"][0]["schema:priceSpecification"][0]:
+               clean_data["price"] = data["offers"][0]["schema:priceSpecification"][0]["schema:price"]
+           if "appliesOnPeriod" in data["offers"][0]["schema:priceSpecification"][0]:
+               if "endDate" in data["offers"][0]["schema:priceSpecification"][0]["appliesOnPeriod"][0]:
+                   clean_data["endDate"] = data["offers"][0]["schema:priceSpecification"][0]["appliesOnPeriod"][0]["endDate"]
+               if "startDate" in data["offers"][0]["schema:priceSpecification"][0]["appliesOnPeriod"][0]:
+                   clean_data["startDate"] = data["offers"][0]["schema:priceSpecification"][0]["appliesOnPeriod"][0]["startDate"]
 
 
-with driver_neo4j.session() as session:
-    #insert poi by poi
-    for row in pois:
-        id = row["identifier"]
-        label = row["label"]
-        #filtrage sur les erreurs latitude longitude hors France métropolaine
-        if (51.10>= float(row["latitude"])>=41.30) and (9.57>= float(row["longitude"]) >=-5.17):
-            latitude = float(row["latitude"])
-            longitude = float(row["longitude"])
-        else:
-            continue
-        originalTypes = row["types"]
-        insertedTypes = []
-        for type in originalTypes:
-            if type in selectedTypes:
-                if (type == "AccommodationProduct") and ("Accommodation" not in insertedTypes):
-                    insertedTypes.append("Accommodation")
-                elif (type == "Accommodation") and ("Accommodation" not in insertedTypes):
-                    insertedTypes.append("Accommodation")
-                else:
-                    insertedTypes.append(type)
-        locality = row["locality"]
-        postalCode = row["postalCode"]
-        query = '''
-        CREATE (:POI {id: $i,
-        label: $lab,
-        types: $t,
-        locality: $l,
-        postalCode: $p,
-        longitude: $lon,
-        latitude : $la,
-        location : point({longitude: $lon, latitude: $la})
-        });
-        '''
-        result = session.run(query, i = id, lab = label, t=insertedTypes, l = locality, p = postalCode, lon = longitude, la = latitude)
+    if "reducedMobilityAccess" in data:
+        clean_data["reducedMobilityAccess"] = data["reducedMobilityAccess"]
 
-    session.close()
+    if "tourDistance" in data:
+        clean_data["tourDistance"] = data["tourDistance"]
 
-driver_neo4j.close()
+    clean_data["addressLocality"] = clean_data["isLocatedAt"][0]["schema:address"][0]["schema:addressLocality"]
+    clean_data["postalCode"] = clean_data["isLocatedAt"][0]["schema:address"][0]["schema:postalCode"]
+    clean_data["longitude"] = float(clean_data["isLocatedAt"][0]["schema:geo"]["schema:longitude"])
+    clean_data["latitude"] = float(clean_data["isLocatedAt"][0]["schema:geo"]["schema:latitude"])
+
+    if (180>=clean_data["longitude"]>=-180) and (90>= clean_data["latitude"]>=-90):
+        clean_data["location"]={"type":"Point","coordinates": [clean_data["longitude"],clean_data["latitude"]]}
+    else:
+        clean_data["location"]={"type":"Point","coordinates": [0,0]}
+
+    del clean_data["isLocatedAt"]
+    
+    #save in mongo
+    col.insert_one(clean_data)
 
 tt = time() - t0
 print("Réalisé en {} secondes".format(round(tt,3)))
+
 
