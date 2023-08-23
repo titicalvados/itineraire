@@ -74,3 +74,14 @@ Les autres listes de communes :
 - liste_communes_toutes.csv
   
 sont des listes plus ou moins longues pour tester la vitesse de chargement de la base. 
+
+Ajout de 3 fichiers pythons
+1) import_POIs_in_MongoDB.py
+   Crée une collection mongoDB poi à partir des fichiers datatourism. A lancer depuis un endroit ou se trouve un dossier data\POI_Bretagne (modifiable dans le fichier py)
+2) load_POI_neo4j.py
+   Lit la collection poi mongo pour aller créer un noeud par poi avec les infos de label, types et position   
+3) create_POI_neighbour_relation.py
+   Lit la collection poi mongo pour récupérer les poi puis poi par poi requête mongo pour récupérer les pois voisins dans un rayon de 40 km pour une liste de types donnés (paramétrable dans l'appli)
+   Problèmes de performance rencontrés, c'est très lent
+
+
