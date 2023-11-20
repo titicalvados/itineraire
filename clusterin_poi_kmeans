@@ -1,0 +1,103 @@
+# Importez les bibliothèques nécessaires
+import numpy as np
+fichier="C:/Users/wznz1892/Documents/Work/Formation_DI_2023/Projet_Iteniraire/data/matrix.txt"
+# Définissez une liste vide pour stocker les données
+data = []
+
+# Ouvrez le fichier et lisez les lignes
+with open(fichier, 'r') as file:
+    lines = file.readlines()
+    for line in lines:
+        parts = line.strip().split(',')
+        if len(parts) == 3:
+            id_poi, latitude, longitude = parts
+            data.append([float(latitude), float(longitude)])
+            
+# Transformez la liste en un tableau NumPy
+data = np.array(data)
+
+from sklearn.preprocessing import StandardScaler
+
+# Normalisez les données
+scaler = StandardScaler()
+data_normalized = scaler.fit_transform(data)
+
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+# Choisissez un intervalle de valeurs de K à tester
+k_values = range(1, 11)
+inertias = []
+
+# Calculez l'inertie pour chaque valeur de K
+for k in k_values:
+    kmeans = KMeans(n_clusters=k, random_state=0)
+    kmeans.fit(data)
+    inertias.append(kmeans.inertia_)
+
+# Tracez le graphique de l'inertie par rapport à K
+plt.figure(figsize=(8, 4))
+plt.plot(k_values, inertias, marker='o', linestyle='-')
+plt.title('Méthode du coude pour le choix de K')
+plt.xlabel('Nombre de clusters (K)')
+plt.ylabel('Inertie')
+plt.grid(True)
+plt.show()
+
+
+k = 8
+
+# Appliquez K-means
+kmeans = KMeans(n_clusters=k, random_state=0)
+kmeans.fit(data_normalized)
+
+# Les centres des clusters sont stockés dans kmeans.cluster_centers_
+centres_clusters = scaler.inverse_transform(kmeans.cluster_centers_)
+
+# L'attribution des points à un cluster est stockée dans kmeans.labels_
+cluster_assignments = kmeans.labels_
+
+# Plot les données en utilisant les coordonnées de latitude et de longitude
+plt.scatter(data[:, 0], data[:, 1], c=cluster_assignments, cmap='rainbow')
+plt.scatter(centres_clusters[:, 0], centres_clusters[:, 1], c='black', marker='x', s=100)
+plt.xlabel('Latitude')
+plt.ylabel('Longitude')
+plt.title('Résultat du clustering avec K-means')
+plt.show()
+
+import folium
+
+# Créez une carte centrée sur une latitude et une longitude spécifiques
+m = folium.Map(location=[48.5, -3], zoom_start=8)
+# Définissez une liste de couleurs pour les clusters (une couleur par cluster)
+colors = ['red', 'blue', 'green', 'purple', 'orange', 'pink', 'darkblue', 'gray']
+
+# Ajoutez des marqueurs pour chaque point, en utilisant des couleurs différentes pour chaque cluster
+for i in range(len(data)):
+    cluster = cluster_assignments[i]
+    folium.CircleMarker([data[i, 0], data[i, 1]], radius=5, color=colors[cluster], fill=True, fill_color=colors[cluster], stroke=False).add_to(m)
+
+# Affichez la carte
+m.save('C:/Users/wznz1892/Documents/Work/Formation_DI_2023/Projet_Iteniraire/data/clustering_map.html')
+
+import numpy as np
+import pandas as pd
+
+# Créez un DataFrame contenant vos données originales et les attributions de cluster
+df = pd.DataFrame(data, columns=['Latitude', 'Longitude'])
+df['Cluster'] = cluster_assignments
+
+# Calculez le nombre de points dans chaque cluster
+cluster_counts = df['Cluster'].value_counts()
+
+# Calculez la moyenne des coordonnées de latitude et de longitude pour chaque cluster
+cluster_means = df.groupby('Cluster').agg({'Latitude': 'mean', 'Longitude': 'mean'})
+
+# Autres statistiques pertinentes peuvent être calculées en fonction de vos besoins
+
+# Affichez les statistiques
+print("Nombre de points dans chaque cluster :")
+print(cluster_counts)
+print("\nMoyenne des coordonnées de latitude et de longitude pour chaque cluster :")
+print(cluster_means)
+
