@@ -101,3 +101,23 @@ print(cluster_counts)
 print("\nMoyenne des coordonnées de latitude et de longitude pour chaque cluster :")
 print(cluster_means)
 
+
+poi_data = pd.DataFrame(data, columns=['Latitude', 'Longitude'])
+
+# Ajoutez les attributions de cluster au DataFrame
+poi_data['Cluster'] = cluster_assignments
+
+# Ajoutez d'autres informations que vous avez calculées (par exemple, nombre de points dans chaque cluster, moyenne des coordonnées)
+poi_data = poi_data.merge(
+    pd.DataFrame({'Cluster': cluster_counts.index, 'Cluster_Count': cluster_counts.values}),
+    on='Cluster',
+)
+
+poi_data = poi_data.merge(
+    cluster_means.reset_index(),
+    on='Cluster',
+    suffixes=('', '_Mean')
+)
+
+# Affichez le DataFrame
+print(poi_data)
