@@ -44,16 +44,23 @@ MATCH ()-[r:NEIGHBOUR]-()
 with driver_neo4j.session() as session:
     result = session.run(query).data()
 
+treatedPOIs=[]
+
 #retrieve neighbours for all nodes and create relation with distance weight
 neighbourhoodDistance = 50000
 print("considéré comme voisin (en m) si moins de :",neighbourhoodDistance)
 for row in pois:
+    treatedPOIs.append(row["identifier"])
+    #affichage du progrès et du temps de mise à jour tous les 1000 POIs
+    if len(treatedPOIs) % 1000 == 0:
+        ti = time() - t0
+        print("{} POIs traités en {} secondes".format(len(treatedPOIs),round(ti,3)))
     #filtrage sur les erreurs latitude longitude hors France métropolaine
     if not (51.10>= float(row["latitude"])>=41.30) or not (9.57>= float(row["longitude"]) >=-5.17):
         continue
     neighbours = collection_poi.aggregate([{'$geoNear': {'near': { 'coordinates': [float(row["longitude"]) , float(row["latitude"])] },'distanceField': 'distance','maxDistance': neighbourhoodDistance,'query': { '$or': orArray}}},{'$project': { 'identifier': '$dc:identifier','distance':'$distance'}}])
     for neighbour in neighbours:
-        if neighbour["identifier"] == row["identifier"]:
+        if neighbour["identifier"] in treatedPOIs:
             continue
         #create neighbour relationship
         with driver_neo4j.session() as session:
