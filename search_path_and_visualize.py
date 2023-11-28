@@ -9,12 +9,23 @@ driver_neo4j = GraphDatabase.driver('bolt://0.0.0.0:7687',
                               auth=('neo4j', 'neo4j'))
 
 #----------------------------------------------------------
-# initialisation du graphe - A DECOMMENTER LA PREMIERE FOIS
+# suppression du graphe
+query_drop_graph = '''
+CALL gds.graph.drop(
+    'myGraph'
+)
+'''
+
+with driver_neo4j.session() as session:
+    result = session.run(query_drop_graph).data()
+
+#----------------------------------------------------------
+# initialisation du graphe
 query_init_graph = '''
 CALL gds.graph.project(
     'myGraph',
     'POI',
-    'NEIGHBOUR',
+    { NEIGHBOUR: {type: 'NEIGHBOUR', orientation: 'UNDIRECTED'}},
     {
         relationshipProperties: 'distance'
     }
