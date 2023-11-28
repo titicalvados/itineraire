@@ -24,8 +24,7 @@ print("Nombre de POIs: ",nb_poi)
 
 @app.route("/getpoiinfos/<id>")
 def get_poi_infos(id):
-    poi = collection_poi.aggregate([{'$match'  : {'dc:identifier':id}},{'$project': { '_id':0,'identifier': '$dc:identifier','label': '$label','types': '$types','locality': '$addressLocality','postalCode':'$postalCode','latitude':'$latitude','longitude':'$longitude'}}])
-    #return dumps(list(poi)[0])
+    poi = collection_poi.aggregate([{'$match'  : {'dc:identifier':id}},{'$project': { '_id':0,'identifier': '$dc:identifier','label': '$label','types': '$types','shortDescription':'$shortDescription','locality': '$addressLocality','postalCode':'$postalCode','email':'$email','telephone1':'$telephone1','web':'$web','latitude':'$latitude','longitude':'$longitude'}}])
     return Response(dumps(list(poi)[0]), mimetype='application/json')
 
 
@@ -46,47 +45,6 @@ print(list(poi))
 
 
 selectedTypes = ["AccommodationProduct","Visit","Rental","Store","Accommodation","FoodEstablishment","EntertainmentAndEvent","SportsAndLeisurePlace","CulturalSite","Tour","CampingAndCaravanning","ReligiousSite","NaturalHeritage","TouristInformationCenter"]
-
-
-#with driver_neo4j.session() as session:
-    #insert poi by poi
- #   for row in pois:
- #      id = row["identifier"]
-  #      label = row["label"]
-     #filtrage sur les erreurs latitude longitude hors France métropolaine
-#        if (51.10>= float(row["latitude"])>=41.30) and (9.57>= float(row["longitude"]) >=-5.17):
- #           latitude = float(row["latitude"])
-  #          longitude = float(row["longitude"])
-   #     else:
-    #        continue
-     #   originalTypes = row["types"]
-      #  insertedTypes = []
-       # for type in originalTypes:
-        #    if type in selectedTypes:
-         #       if (type == "AccommodationProduct") and ("Accommodation" not in insertedTypes):
-          #          insertedTypes.append("Accommodation")
-           #     elif (type == "Accommodation") and ("Accommodation" not in insertedTypes):
-            #        insertedTypes.append("Accommodation")
-             #   else:
-              #      insertedTypes.append(type)
-#        locality = row["locality"]
-#        postalCode = row["postalCode"]
- #       query = '''
-  #      CREATE (:POI {id: $i,
-   #     label: $lab,
-    #    types: $t,
-     #   locality: $l,
-      # postalCode: $p,
-#        longitude: $lon,
- #       latitude : $la,
-  #      location : point({longitude: $lon, latitude: $la})
-   #     });
-    #    '''
-        #result = session.run(query, i = id, lab = label, t=insertedTypes, l = locality, p = postalCode, lon = longitude, la = latitude)
-
-   # session.close()
-
-# driver_neo4j.close()
 
 tt = time() - t0
 print("Réalisé en {} secondes".format(round(tt,3)))
