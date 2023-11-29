@@ -17,7 +17,10 @@ CALL gds.graph.drop(
 '''
 
 with driver_neo4j.session() as session:
-    result = session.run(query_drop_graph).data()
+    try:
+        result = session.run(query_drop_graph).data()
+    except:
+        print("Graph with name myGraph does not exist on database neo4j")
 
 #----------------------------------------------------------
 # initialisation du graphe
