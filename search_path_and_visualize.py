@@ -5,6 +5,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import os
+import requests
+#import json
 
 from dash import dcc
 from dash import html 
@@ -123,6 +125,17 @@ app.layout = html.Div(
         ),
         html.Div([
             html.Ul(
+                id='view_POI_info',
+                children=[
+                    html.Li(''),            
+                    html.Li(''),            
+                    html.Li(''),            
+                    html.Li('')
+                ]
+            )
+        ]),
+        html.Div([
+            html.Ul(
                 id='view_click',
                 children=[
                     html.Li('départ  : '),            
@@ -165,9 +178,10 @@ app.layout = html.Div(
 #       ]
 #  }
 
-@app.callback(
+@app.callback([
     Output(component_id='view_click', component_property='children'),
-    Input(component_id='iti_map', component_property='clickData'),
+    Output(component_id='view_POI_info', component_property='children')],
+    [Input(component_id='iti_map', component_property='clickData')],
     State('iti_map', 'figure'),
     prevent_initial_call=True
 )
@@ -218,12 +232,58 @@ def update_map(clickData, f):
             click_dep = click_df.iloc[-2]['label']
             click_arr = click_df.iloc[-1]['label']
 
-        # callback return: the html list of values ('start' POI label, 'end' POI label, and number of clicks (for debug)
-        return [
-                    html.Li('départ  : '+click_dep),
-                    html.Li('arrivée : '+click_arr)
-                    #,html.Li(iti_click) # click counter for debug
-               ]
+        # API call with the "/getpoiinfos" endpoint to get infos about the POI from mongoDB  
+        click_id = click_df.iloc[-2]['poi_id']
+        api_url = 'http://localhost:5001/getpoiinfos/'+click_id
+        #print(api_url)
+        POI_info_label = ''
+        POI_info_description = ''
+        POI_info_localisation = ''
+        POI_info_contact = ''
+
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            # getting the result json structure from the response 
+            POI_info_json = response.json()
+            #print(POI_info_json)
+
+    
+            # building the 4-item list of information to be displayed
+            if 'label' in POI_info_json:
+                POI_info_label = POI_info_label + POI_info_json['label']
+
+            if 'shortDescription' in POI_info_json:
+                POI_info_description = POI_info_description + POI_info_json['shortDescription']
+
+            if 'locality' in POI_info_json:
+                POI_info_localisation = POI_info_localisation + POI_info_json['locality'] + ',  '
+            if 'postalCode' in POI_info_json:
+                POI_info_localisation = POI_info_localisation + POI_info_json['postalCode']
+
+            if 'telephone1' in POI_info_json:
+                POI_info_contact = POI_info_contact + POI_info_json['telephone1'] + ', '
+            if 'email' in POI_info_json:
+                POI_info_contact = POI_info_contact + POI_info_json['email'] + ', '
+            if 'web' in POI_info_json:
+                POI_info_contact = POI_info_contact + POI_info_json['web']
+
+        html_POI_info = [
+                html.Li(POI_info_label),
+                html.Li(POI_info_description),
+                html.Li(POI_info_localisation),
+                html.Li(POI_info_contact)
+        ]
+
+        # building the 2-item list of itinerary 'start' and 'end' POIs to be displayed 
+        html_POI_list = [
+                html.Li('départ  : '+click_dep),
+                html.Li('arrivée : '+click_arr)
+                #,html.Li(iti_click) # click counter for debug
+        ]
+
+        # callback return: the info list AND the 'start-end' list of values
+        return html_POI_info, html_POI_list
+
     # it nothing clicked, no update    
     return dash.no_update
 
