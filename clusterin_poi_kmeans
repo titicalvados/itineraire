@@ -55,8 +55,18 @@ def cluster_data():
 
         # Sauvegardez la carte en tant que fichier HTML
         m.save('templates/clustering_map.html')
-
+        
         # Continuez avec le reste du code pour le clustering
+
+        #création df originales et les attributions de cluster
+        df = pd.DataFrame(data, columns=['Latitude', 'Longitude'])
+        df['Cluster'] = cluster_assignments
+
+        # Calculez le nombre de points dans chaque cluster
+        cluster_counts = df['Cluster'].value_counts()
+
+        # Calculez la moyenne des coordonnées de latitude et de longitude pour chaque cluster
+        cluster_means = df.groupby('Cluster').agg({'Latitude': 'mean', 'Longitude': 'mean'})
 
         # Renvoyer les résultats sous forme de JSON
         results = {
