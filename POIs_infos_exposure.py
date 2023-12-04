@@ -48,7 +48,7 @@ def get_types_list():
 
 @app.route("/getpoislistbytype/<type>")
 def get_pois_list(type):
-    poi = collection_poi.aggregate([{'$match'  : {'types':{'$in' : [type]}}},{'$project': { '_id':0,'identifier': '$dc:identifier','latitude':'$latitude','longitude':'$longitude'}}])
+    poi = collection_poi.aggregate([{'$match'  : {'types':{'$in' : [type]}}},{'$project': { '_id':0,'identifier': '$dc:identifier','label':'$label','latitude':'$latitude','longitude':'$longitude'}}])
     return Response(dumps(list(poi)),mimetype='application/json')
 
 if __name__ == "__main__":
