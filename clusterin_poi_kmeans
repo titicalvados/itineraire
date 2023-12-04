@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/cluster', methods=['GET'])
 def cluster_data():
     # URI de récupération de données
-    api_url = "http://localhost:5000/getpoislistbytype/EntertainmentAndEvent"
+    api_url = "http://localhost:5001/getpoislistbytype/EntertainmentAndEvent"
     response = requests.get(api_url)
 
     # Vérifiez si la requête a réussi (code 200)
@@ -87,5 +87,5 @@ def show_map():
     return render_template('clustering_map.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)
 
