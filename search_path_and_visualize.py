@@ -75,7 +75,7 @@ iti_click = 0;
 #----------------------------------------------------------------
 # map definition function for the layout 
 #
-# intput : dataframe with at least 'latitude' 'longitude' and 'lable' columns
+# intput : dataframe with at least 'latitude' 'longitude' and 'label' columns
 def iti_map(df):
     fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
                             height=800, width=1600,
@@ -304,8 +304,8 @@ def icompute_itineraire(n_clicks):
         click_df = pd.read_csv('clicked.csv')
         #print("compute itineraire")
         if (iti_click >=2) and (click_df.index.size >=2):
-            poi_dep = click_df.iloc[-2]['poi_id']
-            poi_arr = click_df.iloc[-1]['poi_id']
+            poi_dep = click_df.iloc[-2]['identifier']
+            poi_arr = click_df.iloc[-1]['identifier']
 
             # the map will still contains the global POIs (from the mail 'poi_df' dataframe)
             new_fig = iti_map(poi_df)
