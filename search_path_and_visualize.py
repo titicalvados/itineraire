@@ -69,11 +69,6 @@ if response.status_code == 200:
     api_data = response.json()
     poi_df = pd.DataFrame.from_dict(api_data)
 
-# POI initialisation with subset of CSV file
-poi_df = pd.read_csv('extract_poi_2.csv')
-
-#print(poi_df)
-
 # number of clicks
 iti_click = 0;
 
