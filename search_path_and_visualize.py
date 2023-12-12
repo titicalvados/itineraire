@@ -14,6 +14,10 @@ from dash import State
 from dash.dependencies import Input, Output
 from neo4j import GraphDatabase
 
+#delete temporary file used
+if os.path.exists('clicked.csv'):
+    os.remove('clicked.csv')
+
 #neo4j driver
 driver_neo4j = GraphDatabase.driver('bolt://0.0.0.0:7687',
                               auth=('neo4j', 'neo4j'))
@@ -54,35 +58,31 @@ with driver_neo4j.session() as session:
     try:
         result = session.run(query_init_graph).data()
     except:
-        print("Graph with name myGraph does not exist on database neo4j")
+        print("Can't init Graph with name myGraph")
 
+# URI de récupération des POIs
+api_url = "http://localhost:5001/getpoislistbytype/EntertainmentAndEvent"
+response = requests.get(api_url)
 
-# POI initialisation with subset of CSV file
-poi_df = pd.read_csv('extract_poi_2.csv')
-
-#print(poi_df)
+# Vérifiez si la requête a réussi (code 200)
+if response.status_code == 200:
+    api_data = response.json()
+    poi_df = pd.DataFrame.from_dict(api_data)
 
 # number of clicks
 iti_click = 0;
-#print("iti_click : ",iti_click)
-
 
 #----------------------------------------------------------------
 # map definition function for the layout 
 #
-# intput : dataframe with at least 'lat' (latitude) and 'lon' (longitude) columns
+# intput : dataframe with at least 'latitude' 'longitude' and 'label' columns
 def iti_map(df):
-    fig = px.scatter_mapbox(poi_df, lat="lat", lon="lon",
-                            height=500, width=800,
-                            #color="Empresas", size="Empresas", size_max=75, animation_frame='year',
-                            #color="Empresas", size="Empresas",
-                            #size=200,
+    fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
+                            height=800, width=1600,
                             size_max=175,
                             color_continuous_scale='viridis',
                             mapbox_style="carto-positron", 
-                            #zoom=5.5, 
                             hover_name="label"
-                            #center={"lat": -4, "lon": -79.01})
                             )
     return fig
 
@@ -91,7 +91,6 @@ def iti_map(df):
 #creation de l'appli dash
 app = dash.Dash()
  
-
 
 #----------------------------------------------------------------
 # layout definition
@@ -110,9 +109,9 @@ app.layout = html.Div(
         html.Div(
             dcc.Dropdown(
                 options= [
-                    {'label': 'Events', 'value': 'val_event'},
-                    {'label': 'Architecture', 'value': 'val_archi'},
-                    {'label': 'Food', 'value': 'val_food'}],
+                    {'label': 'EntertainmentAndEvent', 'value': 'val_event'},
+                    {'label': 'CulturalSite', 'value': 'val_cult'},
+                    {'label': 'Accomodation', 'value': 'val_acco'}],
                 id = 'iti_theme',
                 value= 'val_event'
             )
@@ -121,7 +120,7 @@ app.layout = html.Div(
             [
                 dcc.Graph(id='iti_map', figure=iti_map(poi_df))
             ],
-            style={'width': '75%', 'display': 'inline-block'}
+            style={'width': '80%', 'display': 'inline-block'}
         ),
         html.Div([
             html.Ul(
@@ -140,7 +139,6 @@ app.layout = html.Div(
                 children=[
                     html.Li('départ  : '),            
                     html.Li('arrivée : ')
-                    #,html.Li(iti_click) #click counter for debug
                 ]
             )
         ]),
@@ -192,8 +190,6 @@ def update_map(clickData, f):
         
         #updating the global number of clicks 
         iti_click = iti_click + 1
-        #print(iti_click)
-        #print(clickData)
 
         # the list of clicked POIs is updated and stored in a file in the current directory
         # THIS IS NOT THE BEST WAY TO REMEMBER CONTEXT BETWEEN CALLBACKS, BUT MY FIRST TRIES FAILED (using 'dcc.Store')
@@ -205,11 +201,6 @@ def update_map(clickData, f):
             click_df = pd.read_csv('clicked.csv')
         else:
             click_df = poi_df.head(0)
-        #print(click_df)
-        #click_df = poi_df.head(0)
-        #print(click_df)
-        #print(clickData['points'][0]['hovertext'])
-        #print(poi_df.loc[poi_df['label'] == clickData['points'][0]['hovertext']])
 
         # concatenating the current dataframe of clicked POIs with a the (only) line from the global POI dataframe 
         # where the 'label' value matches with the POI clicked
@@ -223,17 +214,23 @@ def update_map(clickData, f):
 
         # preparing the list of 'start' and 'end' POIs to be displayed
         if (iti_click == 1):
-            # very first click of the app: this will be the 'start', and the 'end' will be empty.
-            click_dep = click_df.iloc[-1]['label']
-            click_arr = ''
+           if os.path.exists('clicked.csv'):
+               click_dep = click_df.iloc[-1]['label']
+               click_arr = ''
+               click_id = click_df.iloc[-1]['identifier']
+           else:                      
+               # very first click of the app: this will be the 'start', and the 'end' will be empty.
+               click_dep = click_df.iloc[0]['label']
+               click_arr = ''
+               click_id = click_df.iloc[0]['identifier']
         else:
             # not the first click: the 'start' will be the previously clicked POI (the previous end),
             # and the 'end' will be the current clicked POI
             click_dep = click_df.iloc[-2]['label']
             click_arr = click_df.iloc[-1]['label']
+            click_id = click_df.iloc[-1]['identifier']
 
         # API call with the "/getpoiinfos" endpoint to get infos about the POI from mongoDB  
-        click_id = click_df.iloc[-2]['poi_id']
         api_url = 'http://localhost:5001/getpoiinfos/'+click_id
         #print(api_url)
         POI_info_label = ''
@@ -307,8 +304,8 @@ def icompute_itineraire(n_clicks):
         click_df = pd.read_csv('clicked.csv')
         #print("compute itineraire")
         if (iti_click >=2) and (click_df.index.size >=2):
-            poi_dep = click_df.iloc[-2]['poi_id']
-            poi_arr = click_df.iloc[-1]['poi_id']
+            poi_dep = click_df.iloc[-2]['identifier']
+            poi_arr = click_df.iloc[-1]['identifier']
 
             # the map will still contains the global POIs (from the mail 'poi_df' dataframe)
             new_fig = iti_map(poi_df)
