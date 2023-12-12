@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/cluster', methods=['GET'])
 def cluster_data():
     # URI de récupération de données
-    api_url = "http://localhost:5000/getpoislistbytype/EntertainmentAndEvent"
+    api_url = "http://localhost:5001/getpoislistbytype/EntertainmentAndEvent"
     response = requests.get(api_url)
 
     # Vérifiez si la requête a réussi (code 200)
@@ -55,8 +55,18 @@ def cluster_data():
 
         # Sauvegardez la carte en tant que fichier HTML
         m.save('templates/clustering_map.html')
-
+        
         # Continuez avec le reste du code pour le clustering
+
+        #création df originales et les attributions de cluster
+        df = pd.DataFrame(data, columns=['Latitude', 'Longitude'])
+        df['Cluster'] = cluster_assignments
+
+        # Calculez le nombre de points dans chaque cluster
+        cluster_counts = df['Cluster'].value_counts()
+
+        # Calculez la moyenne des coordonnées de latitude et de longitude pour chaque cluster
+        cluster_means = df.groupby('Cluster').agg({'Latitude': 'mean', 'Longitude': 'mean'})
 
         # Renvoyer les résultats sous forme de JSON
         results = {
@@ -77,5 +87,5 @@ def show_map():
     return render_template('clustering_map.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)
 
