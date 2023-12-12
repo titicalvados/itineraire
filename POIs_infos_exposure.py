@@ -52,4 +52,4 @@ def get_pois_list(type):
     return Response(dumps(list(poi)),mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5001,debug=True)
+    app.run(host="0.0.0.0",port=5005,debug=True)
