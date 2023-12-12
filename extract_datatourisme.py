@@ -9,19 +9,11 @@ import shutil
 app = Flask(__name__)
 
 def create_and_clear_directory(directory):
-    # Créer le répertoire s'il n'existe pas
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    else:
-        # Vider le répertoire s'il n'est pas vide
-        for file_name in os.listdir(directory):
-            file_path = os.path.join(directory, file_name)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-            except Exception as e:
-                print(e)
-
+    # Supprimer le répertoire et tout son contenu s'il existe
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+    # Le créer
+    os.makedirs(directory)
 
 @app.route('/telecharger-et-archiver', methods=['GET'])
 def download_and_archive():
