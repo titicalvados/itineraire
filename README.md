@@ -83,5 +83,36 @@ Ajout de 3 fichiers pythons
 3) create_POI_neighbour_relation.py
    Lit la collection poi mongo pour récupérer les poi puis poi par poi requête mongo pour récupérer les pois voisins dans un rayon de 40 km pour une liste de types donnés (paramétrable dans l'appli)
    Problèmes de performance rencontrés, c'est très lent
+4) clustering_poi_kmeans:
+Api Flask pour le Clustering de POI avec K-means :
 
+Objectif : L'application utilise Flask pour effectuer le clustering de points d'intérêt (POI) en fesant appele à l'api  url = "http://localhost:5005/getpoislistbytype/EntertainmentAndEvent". Il permet  d'appliquer l'algorithme K-means, génèrer une carte interactive avec Folium, et exposer des endpoints pour visualiser la carte et récupérer les résultats du clustering.
 
+Endpoints :
+
+    /cluster (GET) :
+        Endpoint pour effectuer le clustering.
+    /map (GET) :
+    Endpoint pour afficher la carte générée avec Folium.
+    Renvoie la page HTML contenant la carte interactive.
+Exécution :
+
+    Exécutez le script Python.
+    Accédez à l'URL http://localhost:5004/cluster pour déclencher le clustering et obtenir les résultats en format JSON.
+    Accédez à l'URL http://localhost:5004/map pour visualiser la carte interactive générée.
+5) extract_datatourisme.py
+   Ce code représente une application Flask qui télécharge un fichier ZIP à partir d'une URL (flux de données datatourisme), extrait son contenu dans un répertoire local, et renvoie le chemin du répertoire local nouvellement créé.
+   
+    Endpoint /telecharger-et-archiver (GET) :
+   
+        Télécharge un fichier ZIP à partir d'une URL spécifiée (url).
+        Crée un répertoire local basé sur la date actuelle.
+        Télécharge le fichier ZIP et l'enregistre localement dans le répertoire créé.
+        Extrait le contenu du fichier ZIP dans le même répertoire.
+        Supprime le fichier ZIP après extraction.
+        Renvoie le chemin du répertoire local créé.
+   
+    Exécution :
+   
+        L'application Flask écoute sur le port 5002.
+        Accédez à l'URL http://localhost:5002/telecharger-et-archiver pour déclencher le téléchargement, l'extraction et           obtenir le chemin du répertoire local.
