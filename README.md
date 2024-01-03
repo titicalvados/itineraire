@@ -21,7 +21,7 @@ En plus des ports 27017 pour MongoDB ainsi que 7474 et 7687 pour Neo4J, le servi
 Ensuite 
 1) Cloner le projet => git clone https://github.com/titicalvados/itineraire.git
 2) Se positionner dans le répertoire racine du projet
-3) Exécuter le fichier build_images.sh => ./build_images.sh
+3) Donner les droits d'exécution puis exécuter le fichier build_images.sh => ./build_images.sh
 4) Lancer le docker-compose => docker-compose up -d
 5) Ouvrir votre navigateur préféré sur les urls http://localhost:5001 (service manager, l'orchestrateur qui importe/prépare les données et reste à automatiser avec Airflow) et http://localhost:5000 (front end utilisateur final)
 6) Docker-compose down lorsque vous avez terminé
