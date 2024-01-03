@@ -16,7 +16,7 @@ Si vous n'avez pas installé Neo4J vous pouvez le faire par docker avec la comma
 Si vous n'avez pas installé MongoDB vous pouvez le faire par docker avec la commande suivante
 - docker run -d -p 27017:27017 --name my_mongo -v mongo_volume:/data/db mongo:latest
 
-En plus des ports 27017 pour MongoDB ainsi que 7474 et 7687 pour Neo4J, le service utilisent les ports 5000 à 5006. Assurez vous qu'ils sont libres sur votre machine
+En plus des ports 27017 pour MongoDB ainsi que 7474 et 7687 pour Neo4J, le service utilise les ports 5000 à 5006. Assurez vous qu'ils sont libres sur votre machine
 
 Ensuite 
 1) Cloner le projet => git clone https://github.com/titicalvados/itineraire.git
