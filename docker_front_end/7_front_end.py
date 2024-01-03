@@ -6,90 +6,55 @@ import plotly.express as px
 import plotly.graph_objects as go
 import os
 import requests
-#import json
-
 from dash import dcc
 from dash import html 
 from dash import State 
 from dash.dependencies import Input, Output
 from neo4j import GraphDatabase
 
-#delete temporary file used
-if os.path.exists('clicked.csv'):
-    os.remove('clicked.csv')
-
 #neo4j driver
 driver_neo4j = GraphDatabase.driver('bolt://0.0.0.0:7687',
                               auth=('neo4j', 'neo4j'))
 
-#----------------------------------------------------------
-# neo4j graph reset 
-#
-# first: deletion
-
-query_drop_graph = '''
-CALL gds.graph.drop(
-    'myGraph'
-)
-'''
-with driver_neo4j.session() as session:
-    try:
-        result = session.run(query_drop_graph).data()
-    except:
-        print("Graph with name myGraph does not exist on database neo4j")
-
-# then new initialisation 
-query_init_graph = '''
-CALL gds.graph.project(
-    'myGraph',
-    'POI',
-    { 
-        NEIGHBOUR: {
-            type: 'NEIGHBOUR', 
-            orientation: 'UNDIRECTED'
-        }
-    },
-    {
-        relationshipProperties: 'distance'
-    }
-)
-'''
-with driver_neo4j.session() as session:
-    try:
-        result = session.run(query_init_graph).data()
-    except:
-        print("Can't init Graph with name myGraph")
+if os.path.exists('clicked.csv'):
+    os.remove('clicked.csv')
 
 # URI de récupération des POIs
-api_url = "http://localhost:5001/getpoislistbytype/EntertainmentAndEvent"
-response = requests.get(api_url)
-
-# Vérifiez si la requête a réussi (code 200)
-if response.status_code == 200:
-    api_data = response.json()
-    poi_df = pd.DataFrame.from_dict(api_data)
-
+base_api_url = "http://localhost:5005/getpoislistbytype/"
+# initialization of global variables
+poi_df = pd.DataFrame()
+type = "EntertainmentAndEvent"
 # number of clicks
-iti_click = 0;
+iti_click = 0
 
 #----------------------------------------------------------------
 # map definition function for the layout 
 #
 # intput : dataframe with at least 'latitude' 'longitude' and 'label' columns
-def iti_map(df):
+def iti_map():
+    api_url = base_api_url+type
+    response = requests.get(api_url)
+    # Vérifiez si la requête a réussi (code 200)
+    if response.status_code == 200:
+        api_data = response.json()
+        global poi_df
+        poi_df = pd.DataFrame.from_dict(api_data)
+
     fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
                             height=800, width=1600,
                             size_max=175,
                             color_continuous_scale='viridis',
-                            mapbox_style="carto-positron", 
+                            mapbox_style="carto-positron",
                             hover_name="label"
                             )
     return fig
 
 
 #----------------------------------------------------------------
+
 #creation de l'appli dash
-app = dash.Dash()
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
  
 
 #----------------------------------------------------------------
@@ -100,12 +65,15 @@ app = dash.Dash()
 # - list of 'start' and 'end' itinerary POIs
 # - button to lauch itinerary computation
 
+
 app.layout = html.Div(
     [
+        html.Br(),
         html.H1(
-            'Projet DE itinéraire', 
-            style={'textAlign': 'center', 'color': 'mediumturquoise'}
+            'Découvrez la Bretagne à la carte !',
+            style={'margin':'2% auto auto auto','textAlign': 'center', 'color': 'mediumturquoise'}
         ),
+        html.Br(),
         html.Div(
             dcc.Dropdown(
                 options= [
@@ -114,39 +82,51 @@ app.layout = html.Div(
                     {'label': 'Accomodation', 'value': 'val_acco'}],
                 id = 'iti_theme',
                 value= 'val_event'
-            )
+            ),
+            style={'margin':'2% auto auto auto','textAlign': 'center', 'color': 'mediumturquoise','opacity': '0.0 - 1.0', 'width':'50%'}
         ),
+        html.Br(),
         html.Div(
             [
-                dcc.Graph(id='iti_map', figure=iti_map(poi_df))
+                dcc.Graph(id='iti_map', figure=iti_map())
             ],
-            style={'width': '80%', 'display': 'inline-block'}
+            style={'margin':'2% auto auto 20%'}
         ),
+
         html.Div([
             html.Ul(
                 id='view_POI_info',
                 children=[
-                    html.Li(''),            
-                    html.Li(''),            
-                    html.Li(''),            
-                    html.Li('')
                 ]
             )
-        ]),
+        ],
+        style={'margin':'2% auto auto 20%','width': '80%'}
+        ),
         html.Div([
             html.Ul(
                 id='view_click',
                 children=[
-                    html.Li('départ  : '),            
-                    html.Li('arrivée : ')
+                    html.P('Départ  : '),
+                    html.P('Arrivée : ')
+                    #,html.Li(iti_click) #click counter for debug
                 ]
             )
-        ]),
+        ],
+        style={'width': '80%', 'color':'purple','margin':'2% auto auto 20%'}
+        ),
         html.Div([
-            html.Button('itinéraire', id='compute_iti', n_clicks=0),
-        ])
-    ], 
-    style = {'background' : 'beige'}
+            html.Button('Voir le meilleur itinéraire', id='compute_iti', style={'background-color':'orange'},n_clicks=0)
+            ],
+        style={'margin':'auto','text-align':'center'}
+        )
+    ],
+    style={
+    'background-image': 'url("/assets/bretagne.jpg")',
+    'background-repeat': 'no-repeat',
+    'background-position': 'center top',
+    'background-size': 'contain',
+    'max-width':'100%'
+    }
 )
 
 
@@ -190,7 +170,7 @@ def update_map(clickData, f):
         
         #updating the global number of clicks 
         iti_click = iti_click + 1
-
+        
         # the list of clicked POIs is updated and stored in a file in the current directory
         # THIS IS NOT THE BEST WAY TO REMEMBER CONTEXT BETWEEN CALLBACKS, BUT MY FIRST TRIES FAILED (using 'dcc.Store')
         # THIS WAY WORKS...
@@ -201,28 +181,27 @@ def update_map(clickData, f):
             click_df = pd.read_csv('clicked.csv')
         else:
             click_df = poi_df.head(0)
-
+        
         # concatenating the current dataframe of clicked POIs with a the (only) line from the global POI dataframe 
         # where the 'label' value matches with the POI clicked
         # (it would be better to match with the ID value, but the clickData structure does not provide it ;
         # it could be investigated furhter)
         click_df = pd.concat([click_df, poi_df.loc[poi_df['label'] == clickData['points'][0]['hovertext']]])
-        #print(click_df)
-
+        
         # storing the new list of clicked POIs
         click_df.to_csv('clicked.csv',index=False)
 
         # preparing the list of 'start' and 'end' POIs to be displayed
         if (iti_click == 1):
-           if os.path.exists('clicked.csv'):
-               click_dep = click_df.iloc[-1]['label']
-               click_arr = ''
-               click_id = click_df.iloc[-1]['identifier']
-           else:                      
-               # very first click of the app: this will be the 'start', and the 'end' will be empty.
-               click_dep = click_df.iloc[0]['label']
-               click_arr = ''
-               click_id = click_df.iloc[0]['identifier']
+            if os.path.exists('clicked.csv'):
+                click_dep = click_df.iloc[-1]['label']
+                click_arr = ''
+                click_id = click_df.iloc[-1]['identifier']
+            else:
+                # very first click of the app: this will be the 'start', and the 'end' will be empty.
+                click_dep = click_df.iloc[0]['label']
+                click_arr = ''
+                click_id = click_df.iloc[0]['identifier']
         else:
             # not the first click: the 'start' will be the previously clicked POI (the previous end),
             # and the 'end' will be the current clicked POI
@@ -230,9 +209,12 @@ def update_map(clickData, f):
             click_arr = click_df.iloc[-1]['label']
             click_id = click_df.iloc[-1]['identifier']
 
+        # storing the new list of clicked POIs
+        click_df.to_csv('clicked.csv',index=False)
+
+
         # API call with the "/getpoiinfos" endpoint to get infos about the POI from mongoDB  
-        api_url = 'http://localhost:5001/getpoiinfos/'+click_id
-        #print(api_url)
+        api_url = 'http://localhost:5005/getpoiinfos/'+click_id
         POI_info_label = ''
         POI_info_description = ''
         POI_info_localisation = ''
@@ -243,7 +225,6 @@ def update_map(clickData, f):
             # getting the result json structure from the response 
             POI_info_json = response.json()
             #print(POI_info_json)
-
     
             # building the 4-item list of information to be displayed
             if 'label' in POI_info_json:
@@ -263,12 +244,15 @@ def update_map(clickData, f):
                 POI_info_contact = POI_info_contact + POI_info_json['email'] + ', '
             if 'web' in POI_info_json:
                 POI_info_contact = POI_info_contact + POI_info_json['web']
+            if 'identifier' in POI_info_json:
+                POI_info_identifier = POI_info_json['identifier']
 
         html_POI_info = [
                 html.Li(POI_info_label),
                 html.Li(POI_info_description),
                 html.Li(POI_info_localisation),
-                html.Li(POI_info_contact)
+                html.Li(POI_info_contact),
+                html.Li(POI_info_identifier)
         ]
 
         # building the 2-item list of itinerary 'start' and 'end' POIs to be displayed 
@@ -283,6 +267,24 @@ def update_map(clickData, f):
 
     # it nothing clicked, no update    
     return dash.no_update
+
+@app.callback(
+    Output('iti_map', 'figure',allow_duplicate=True),
+    Input('iti_theme', 'value'),
+    prevent_initial_call=True
+)
+def update_map_type(new_type):
+    global type
+    if new_type == "val_event":
+        type = 'EntertainmentAndEvent'
+        new_fig = iti_map()
+    elif new_type == "val_cult":
+        type = 'CulturalSite'
+        new_fig = iti_map() 
+    elif new_type == "val_acco":
+        type = 'Accommodation'
+        new_fig = iti_map()
+    return new_fig
 
 
 #----------------------------------------------------------------
@@ -308,7 +310,7 @@ def icompute_itineraire(n_clicks):
             poi_arr = click_df.iloc[-1]['identifier']
 
             # the map will still contains the global POIs (from the mail 'poi_df' dataframe)
-            new_fig = iti_map(poi_df)
+            new_fig = iti_map()
             # and it will be updated with the itinerary: POI colored differently and linked with a line
 
             # first, computing the itinerary using the neo4j database content
