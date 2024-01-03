@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  import_datatourisme:
+    image: extract_datatourisme:latest
+    container_name: extract_datatourisme_from_compose
+    network_mode: "host"
+    volumes:
+      - datatourisme:/home/datatourisme
+  import_mongo_datatourisme:
+    image: import_mongo_datatourisme:latest
+    container_name: import_mongo_from_compose
+    network_mode: "host"
+    volumes:
+      - datatourisme:/home/datatourisme
+  pois_infos:
+    image: docker_pois_infos:latest
+    container_name: pois_infos_from_compose
+    network_mode: "host"
+  clustering:
+    image: pois_clustering:latest
+    container_name: clustering_from_compose
+    depends_on:
+      - pois_infos
+    network_mode: "host"
+    environment:
+      LOG: 1
+  neo4j_pois:
+    image: neo4j_pois:latest
+    container_name: neo4j_pois_from_compose
+    depends_on:
+      - pois_infos
+    network_mode: "host"
+  pois_service_manager:
+    image: pois_service_manager:latest
+    container_name: pois_service_manager_from_compose
+    depends_on:
+      - neo4j_pois
+    network_mode: "host"
+  front_end:
+    image: front_end:latest
+    container_name: front_end_from_compose
+    depends_on:
+      - pois_service_manager 
+    network_mode: "host"
+volumes:
+  datatourisme:
