@@ -1,24 +1,12 @@
-# Utilisez l'image Python officielle
-FROM python:3.9-slim
+FROM ubuntu:22.04
 
-# Définissez la variable d'environnement PYTHONUNBUFFERED
-ENV PYTHONUNBUFFERED 1
+RUN apt-get update && apt-get install -y python3.11 python3-pip
 
-# Définissez une variable d'environnement pour le répertoire de travail
-ARG APP_DIR=/app
-WORKDIR $APP_DIR
+WORKDIR /home
 
-# Copiez d'abord seulement le fichier requirements.txt
-COPY requirements.txt $APP_DIR/requirements.txt
+ADD ./4_clusterin_poi_kmeans.py ./
+ADD ./requirements.txt ./
 
-# Installez les dépendances directement
-RUN pip install --no-cache-dir --use-feature=fast-deps -r $APP_DIR/requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copiez le reste du code
-COPY . $APP_DIR
-
-# Exposez le port sur lequel l'application Flask écoute
-EXPOSE 5004
-
-# Commande pour exécuter l'application Flask
-CMD python3 clustering_poi_kmeans.py
+CMD python3 4_clusterin_poi_kmeans.py
