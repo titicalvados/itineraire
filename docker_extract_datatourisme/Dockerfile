@@ -1,24 +1,12 @@
-# Dockerfile
-# Utilisez l'image Python officielle
-FROM python:3.9-slim
+FROM ubuntu:22.04
 
-# Argument de construction pour spécifier le répertoire source
-ARG APP_DIR=/app
+RUN apt-get update && apt-get install -y python3.11 python3-pip
 
-# Créez et définissez le répertoire de travail
-WORKDIR $APP_DIR
+WORKDIR /home
 
-# Copiez d'abord seulement le fichier requirements.txt
-COPY requirements.txt $APP_DIR/requirements.txt
+ADD ./2_extract_datatourisme.py ./
+ADD ./requirements.txt ./
 
-# Installez les dépendances directement
-RUN pip install --no-cache-dir -r $APP_DIR/requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copiez le script Python
-COPY extract_datatourisme.py $APP_DIR/extract_datatourisme.py
-
-# Exposez le port sur lequel l'application Flask écoute
-EXPOSE 5002
-
-# Commande pour exécuter l'application Flask
-CMD python3 $APP_DIR/extract_datatourisme.py.py
+CMD python3 2_extract_datatourisme.py
