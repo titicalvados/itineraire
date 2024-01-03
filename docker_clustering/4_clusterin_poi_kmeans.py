@@ -6,12 +6,21 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 import folium
 import pandas as pd
+import os
 
 app = Flask(__name__)
 
 # Endpoint pour effectuer le clustering et renvoyer les résultats
 @app.route('/cluster', methods=['GET'])
 def cluster_data():
+    directory = '/home/templates' 
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    else:        
+        #delete map if already exists
+        if os.path.exists('/home/templates/clustering_map.html'):
+            os.remove('/home/templates/clustering_map.html')
+
     # URI de récupération de données
     api_url = "http://localhost:5005/getpoislistbytype/EntertainmentAndEvent"
     response = requests.get(api_url)
@@ -54,10 +63,10 @@ def cluster_data():
                                 fill_color=colors[cluster], stroke=False).add_to(m)
 
         # Sauvegardez la carte en tant que fichier HTML
-        m.save('templates/clustering_map.html')
-        
-        # Continuez avec le reste du code pour le clustering
+        m.save('/home/templates/clustering_map.html')
 
+
+##
         #création df originales et les attributions de cluster
         df = pd.DataFrame(data, columns=['Latitude', 'Longitude'])
         df['Cluster'] = cluster_assignments
@@ -67,6 +76,10 @@ def cluster_data():
 
         # Calculez la moyenne des coordonnées de latitude et de longitude pour chaque cluster
         cluster_means = df.groupby('Cluster').agg({'Latitude': 'mean', 'Longitude': 'mean'})
+
+
+##
+        # Continuez avec le reste du code pour le clustering
 
         # Renvoyer les résultats sous forme de JSON
         results = {
@@ -88,4 +101,3 @@ def show_map():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5004)
-
