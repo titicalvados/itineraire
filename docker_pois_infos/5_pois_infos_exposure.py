@@ -7,7 +7,7 @@ from time import time
 from flask import Flask, jsonify
 from bson.json_util import dumps
 from pydantic import BaseModel
-from flask_pydantic import validate 
+from flask_pydantic import validate
 
 client = MongoClient(host="127.0.0.1", port = 27017)
 
@@ -19,7 +19,7 @@ selectedTypes = ["AccommodationProduct","Visit","Rental","Store","Accommodation"
 
 class Query(BaseModel):
     id:str
-    neighbourhoodDistance:int 
+    neighbourhoodDistance:int
 
 app = Flask(__name__)
 
@@ -32,6 +32,7 @@ def get_poi_infos(id):
     poi = collection_poi.aggregate([{'$match'  : {'dc:identifier':id}},{'$project': { '_id':0,'identifier': '$dc:identifier','label': '$label','types': '$types','comment':'$comment','shortDescription':'$shortDescription','locality': '$addressLocality','postalCode':'$postalCode','email':'$email','telephone1':'$telephone1','web':'$web','latitude':'$latitude','longitude':'$longitude'}}])
     return Response(dumps(list(poi)[0]), mimetype='application/json')
 
+
 @app.route("/getpoineighbours")
 @validate()
 def get_poi_neighbours(query:Query):
@@ -42,14 +43,17 @@ def get_poi_neighbours(query:Query):
     neighbours = collection_poi.aggregate([{'$geoNear': {'near': { 'coordinates': [float(long) , float(lat)] },'distanceField':'distance','maxDistance': query.neighbourhoodDistance }},{'$project': { '_id':0 ,'origin': query.id, 'end': '$dc:identifier', 'distance':'$distance'}}])
     return Response(dumps(list(neighbours)),mimetype='application/json')
 
+
 @app.route("/gettypeslist")
 def get_types_list():
     return jsonify(types = selectedTypes)
+
 
 @app.route("/getpoislistbytype/<type>")
 def get_pois_list(type):
     poi = collection_poi.aggregate([{'$match'  : {'types':{'$in' : [type]}}},{'$project': { '_id':0,'identifier': '$dc:identifier','label':'$label','latitude':'$latitude','longitude':'$longitude'}}])
     return Response(dumps(list(poi)),mimetype='application/json')
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=5005,debug=True)
