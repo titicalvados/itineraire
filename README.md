@@ -11,7 +11,7 @@ Le projet a été développé/testé sur Ubuntu 22.04
 Pour l'éxécuter il faut un PC disposant de Docker, Docker Compose, MongoDB et Neo4J avec les plugins apoc et graph-data-science
 
 Si vous n'avez pas installé Neo4J vous pouvez le faire par docker avec la commande suivante
-- docker run --name my_neo4j -p7474:7474 -p7687:7687 -d -v $HOME/neo4j/data:/data -v $HOME/neo4j/logs:/logs -v $HOME/neo4/import:/var/lib/neo4j/import -v $HOME/neo4j/plugins:/plugins -e NEO4J_AUTH=none  --env NEO4J_PLUGINS='["graph-data-science",”apoc”]' neo4j:latest
+- docker run --name my_neo4j -p7474:7474 -p7687:7687 -d -v $HOME/neo4j/data:/data -v $HOME/neo4j/logs:/logs -v $HOME/neo4/import:/var/lib/neo4j/import -v $HOME/neo4j/plugins:/plugins -e NEO4J_AUTH=none  --env NEO4J_PLUGINS='["graph-data-science","apoc"]' neo4j:latest
 
 Si vous n'avez pas installé MongoDB vous pouvez le faire par docker avec la commande suivante
 - docker run -d -p 27017:27017 --name my_mongo -v mongo_volume:/data/db mongo:latest
