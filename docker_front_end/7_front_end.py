@@ -23,7 +23,7 @@ if os.path.exists('clicked.csv'):
 base_api_url = "http://localhost:5005/getpoislistbytype/"
 # initialization of global variables
 poi_df = pd.DataFrame()
-type = "EntertainmentAndEvent"
+type = "Undefined"
 # number of clicks
 iti_click = 0
 
@@ -32,21 +32,32 @@ iti_click = 0
 #
 # intput : dataframe with at least 'latitude' 'longitude' and 'label' columns
 def iti_map():
-    api_url = base_api_url+type
-    response = requests.get(api_url)
-    # Vérifiez si la requête a réussi (code 200)
-    if response.status_code == 200:
-        api_data = response.json()
-        global poi_df
-        poi_df = pd.DataFrame.from_dict(api_data)
-
-    fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
+    global poi_df
+    if type in ['EntertainmentAndEvent','Accommodation','CulturalSite']:
+        api_url = base_api_url+type
+        response = requests.get(api_url)
+        # Vérifiez si la requête a réussi (code 200)
+        if response.status_code == 200:
+            api_data = response.json()
+            poi_df = pd.DataFrame.from_dict(api_data)
+            fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
                             height=800, width=1600,
                             size_max=175,
                             color_continuous_scale='viridis',
                             mapbox_style="carto-positron",
                             hover_name="label"
                             )
+    else:
+        loudeac = {"latitude": 48.166672, "longitude": -2.75,"label":"Loudeac"}
+        poi_df = pd.DataFrame.from_dict([loudeac])
+        fig = px.scatter_mapbox(poi_df, lat="latitude", lon="longitude",
+                        height=800, width=1600,
+                        size_max=175,
+                        color_continuous_scale='viridis',
+                        mapbox_style="carto-positron",
+                        hover_name="label"
+                        )
+
     return fig
 
 
@@ -77,11 +88,12 @@ app.layout = html.Div(
         html.Div(
             dcc.Dropdown(
                 options= [
+                    {'label': 'Sélectionner le type de POI à afficher sur la carte', 'value': 'no_action'},
                     {'label': 'EntertainmentAndEvent', 'value': 'val_event'},
                     {'label': 'CulturalSite', 'value': 'val_cult'},
                     {'label': 'Accomodation', 'value': 'val_acco'}],
                 id = 'iti_theme',
-                value= 'val_event'
+                value= 'no_action'
             ),
             style={'margin':'2% auto auto auto','textAlign': 'center', 'color': 'mediumturquoise','opacity': '0.0 - 1.0', 'width':'50%'}
         ),
@@ -89,6 +101,7 @@ app.layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id='iti_map', figure=iti_map())
+
             ],
             style={'margin':'2% auto auto 20%'}
         ),
@@ -275,7 +288,10 @@ def update_map(clickData, f):
 )
 def update_map_type(new_type):
     global type
-    if new_type == "val_event":
+    if new_type == "no_action":
+        type = 'Undefined'
+        new_fig = iti_map()
+    elif new_type == "val_event":
         type = 'EntertainmentAndEvent'
         new_fig = iti_map()
     elif new_type == "val_cult":
