@@ -16,12 +16,15 @@ Si vous n'avez pas installé Neo4J vous pouvez le faire par docker avec la comma
 Si vous n'avez pas installé MongoDB vous pouvez le faire par docker avec la commande suivante
 - docker run -d -p 27017:27017 --name my_mongo -v mongo_volume:/data/db mongo:latest
 
+En plus des ports 27017 pour MongoDB ainsi que 7474 et 7687 pour Neo4J, le service utilisent les ports 5000 à 5006. Assurez vous qu'ils sont libres sur votre machine
+
 Ensuite 
-1) Cloner le projet https://github.com/titicalvados/itineraire.git et se positionner dans le répertoire racine
-2) Exécuter le fichier build_images.sh => ./build_images.sh
-3) Lancer le docker-compose => docker-compose up -d
-4) Ouvrir votre navigateur préféré sur les urls http://localhost:5001 (service manager, l'orchestrateur qui importe/prépare les données et reste à automatiser avec Airflow) et http://localhost:5000 (front end utilisateur final)
-5) Docker-compose down lorsque vous avez terminé
+1) Cloner le projet => git clone https://github.com/titicalvados/itineraire.git
+2) Se positionner dans le répertoire racine du projet
+3) Exécuter le fichier build_images.sh => ./build_images.sh
+4) Lancer le docker-compose => docker-compose up -d
+5) Ouvrir votre navigateur préféré sur les urls http://localhost:5001 (service manager, l'orchestrateur qui importe/prépare les données et reste à automatiser avec Airflow) et http://localhost:5000 (front end utilisateur final)
+6) Docker-compose down lorsque vous avez terminé
 
 Remarques : la construction des relations "neighbour" préalable au calcul d'itinéraire est relativement longue dans Neo4J.
 Pour commencer le faire pour les POIs de type Accommodation (environ 3 minutes constaté). Pour EntertainmentAndEvent il faut au moins 9 minutes et pour CulturalSite 28 minutes est un minimum le nombre de POIs étant beaucoup plus important
