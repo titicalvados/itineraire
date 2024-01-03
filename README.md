@@ -17,7 +17,7 @@ Si vous n'avez pas installé MongoDB vous pouvez le faire par docker avec la com
 - docker run -d -p 27017:27017 --name my_mongo -v mongo_volume:/data/db mongo:latest
 
 Ensuite 
-1) Cloner le projet et se positionner dans le répertoire racine
+1) Cloner le projet https://github.com/titicalvados/itineraire.git et se positionner dans le répertoire racine
 2) Exécuter le fichier build_images.sh => ./build_images.sh
 3) Lancer le docker-compose => docker-compose up -d
 4) Ouvrir votre navigateur préféré sur les urls http://localhost:5001 (service manager, l'orchestrateur qui importe/prépare les données et reste à automatiser avec Airflow) et http://localhost:5000 (front end utilisateur final)
