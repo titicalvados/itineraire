@@ -91,7 +91,7 @@ app.layout = html.Div(
                     {'label': 'Sélectionner le type de POI à afficher sur la carte', 'value': 'no_action'},
                     {'label': 'EntertainmentAndEvent', 'value': 'val_event'},
                     {'label': 'CulturalSite', 'value': 'val_cult'},
-                    {'label': 'Accomodation', 'value': 'val_acco'}],
+                    {'label': 'Accommodation', 'value': 'val_acco'}],
                 id = 'iti_theme',
                 value= 'no_action'
             ),
