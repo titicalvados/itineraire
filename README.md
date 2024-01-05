@@ -4,7 +4,7 @@ Ce dépôt GIT contient le code utilisé dans le cadre de notre projet école it
 L’objectif du projet est la création d’une application permettant de proposer un itinéraire passant par des POIs (Points Of Interest) à partir de données DATAtourisme https://www.datatourisme.fr/
 
 L'application a été décomposée en 7 micro services python.
-(https://github.com/titicalvados/itineraire/blob/main/architecture_microservices_v3.png?raw=true "Architecture en microservices")
+![alt text](https://github.com/titicalvados/itineraire/blob/main/architecture_microservices_v3.png?raw=true "Architecture en microservices")
 Chacun des fichiers pythons se trouve dans un répertoire docker_xxx avec les fichiers requirement.txt et Dockerfile associés pour construire l'image docker du micro service
 
 Le projet a été développé/testé sur Ubuntu 22.04
