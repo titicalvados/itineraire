@@ -49,4 +49,4 @@ docker-compose down
 Remarques : la construction des relations "neighbour" préalable au calcul d'itinéraire est relativement longue dans Neo4J.
 Pour commencer le faire pour les POIs de type Accommodation (environ 3 minutes constaté). Pour EntertainmentAndEvent il faut au moins 9 minutes et pour CulturalSite 28 minutes est un minimum le nombre de POIs étant beaucoup plus important.
 
-Dans cette première version un seul type de relation "neighbour" est supporté à la fois, donc si vous voulez calculer un itinéraire entre POIs de type "Accommodation" après l'avoir fait pour des POIs de type "CulturalSite" vous devez recréer les relations au préalable et les relations antérieures seront supprimmées
+Dans cette première version un seul type de relation "neighbour" est supporté à la fois, donc si vous voulez calculer un itinéraire entre POIs de type "Accommodation" après l'avoir fait pour des POIs de type "CulturalSite" vous devez recréer les relations au préalable et les relations antérieures seront supprimées
