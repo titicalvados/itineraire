@@ -1,0 +1,453 @@
+[
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058195d"),
+    "dc:identifier" : "bd5a8888-c71d-4399-9b44-fc2f8d891a9a",
+    "types" : [
+        "schema:Landform",
+        "NaturalHeritage",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Ster-Vraz Apothicairerie",
+    "comment" : "Au nord-ouest de Belle-Ile en Mer, la côte sauvage s'ouvre dans toute sa splendeur vers l'océan.",
+    "shortDescription" : "Formée de vertigineuses falaises, de failles, d'arches, de grottes, de pinacles et d'îlots, elle borde un vaste plateau schisteux où pelouses et landes atlantiques s'étirent à perte de vue. Entaillée au nord par deux profonds vallons, et ça et là parsemée de plages de galets et de sable, elle présente un paysage primaire saisissant.Le nord de la côte sauvage présente une grande diversité floristique. Sur le plateau de l'Apothicairerie, règnent les landes à bruyères vagabondes et ajoncs d'Europe. Propriété du Conservatoire du Littoral.",
+    "telephone1" : "+33 2 96 33 66 32",
+    "web" : "http://www.conservatoire-du-littoral.fr/siteLittoral/223/28-ster-vras-apothicairerie-56_morbihan.htm",
+    "reducedMobilityAccess" : false,
+    "addressLocality" : "Sauzon",
+    "postalCode" : "56360",
+    "longitude" : -3.260028,
+    "latitude" : 47.36173,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.260028,
+            47.36173
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058195e"),
+    "dc:identifier" : "LOIBRE022V52IH04",
+    "types" : [
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Plage de la Cotentin",
+    "shortDescription" : "Plage de sable et de rochers, situé à Planguenoual proche de Pléneuf-Val-André\nPlage interdite aux animaux du 15 juin au 15 septembre",
+    "addressLocality" : "Lamballe-Armor",
+    "postalCode" : "22400",
+    "longitude" : -2.5995074,
+    "latitude" : 48.5574473,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.5995074,
+            48.5574473
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058195f"),
+    "dc:identifier" : "ASCBRE035V51EOZZ",
+    "types" : [
+        "schema:Product",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "Product",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Hélico-Ulm",
+    "shortDescription" : "Baptêmes en HELICO-ULM, au départ de la piste en bordure de la forêt de Villecartier à Trans-la-Forêt, avec survol de la baie du Mont-Saint-Michel et de la côte jusqu'à Saint-Malo, selon le temps de vol choisi.\nCabine fermée, chauffée pour des vols en toutes saisons, afin d'admirer les paysages et la baie.",
+    "email" : "sasairedelaforet@gmail.com",
+    "telephone1" : "+33 2 99 48 51 55",
+    "telephone2" : "+33 6 82 37 16 34",
+    "web" : "http://www.helico-ulm-airedelaforet.com/",
+    "addressLocality" : "Trans-la-Forêt",
+    "postalCode" : "35610",
+    "longitude" : -1.588062,
+    "latitude" : 48.497298,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -1.588062,
+            48.497298
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581960"),
+    "dc:identifier" : "LOIBRE035V51JS69",
+    "types" : [
+        "schema:LocalBusiness",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "SightseeingBoat",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Navire Le Français",
+    "shortDescription" : "Embarquez sur un trois-mâts de 47m à phare carré est une expérience exceptionnelle et inédite. Avec près de 3000m2 de voiles, Le Français est un géant des mers, vestige de la marine à voile du siècle dernier. Témoin de la tradition maritime, le 3 mâts barque embarque les marins d’un jour. Une invitation à participer à la vie à bord, au rythme de la mer.\nOrganisez aussi vos evènements à quai :Fêtes de famille, enterrement de vie de vie de garçon, de jeune fille, mariage, réceptifs … tout est possible à bord du 3 mâts barque tant que son âme est respectée !\n\nNous sélectionnons nos partenaires traiteur, sommelier, fromager, pâtissier, musiciens… qui vous accompagneront lors de vos événements à bord.\n\nInterrogez-nous pour organiser votre prochain plaisir…",
+    "email" : "emmanuel@lefrancais.info",
+    "telephone1" : "+33 6 61 80 90 46",
+    "web" : "https://www.lefrancais.info/",
+    "addressLocality" : "Saint-Malo",
+    "postalCode" : "35400",
+    "longitude" : -2.0160751,
+    "latitude" : 48.6517106,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.0160751,
+            48.6517106
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581961"),
+    "dc:identifier" : "FMABRE022V546T82",
+    "types" : [
+        "schema:Event",
+        "schema:ExhibitionEvent",
+        "CulturalEvent",
+        "EntertainmentAndEvent",
+        "Exhibition",
+        "PointOfInterest"
+    ],
+    "label" : "Exposition Noël 23",
+    "shortDescription" : "Exposition organisée par Olga Lee et Isabelle Samzun. \n\nHoraires d'ouverture : \nLundi et mardi  de 14h à 18h.\nJeudi, vendredi, samedi de 11h à 13h et de 14h à 18h.\nFermeture mercredi et dimanche.",
+    "web" : "https://galerie-jugon-les-arts.fr/work",
+    "addressLocality" : "Jugon-les-Lacs - Commune nouvelle",
+    "postalCode" : "22270",
+    "longitude" : -2.32162,
+    "latitude" : 48.4089,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.32162,
+            48.4089
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581962"),
+    "dc:identifier" : "PNABRE029FS0000Q",
+    "types" : [
+        "schema:Landform",
+        "NaturalHeritage",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Baie de Morlaix",
+    "shortDescription" : "De Roscoff à la Pointe de Primel, la Baie de Morlaix vous offre 1001 visages. \nIlots et rochers parsèment la mer : le château du Taureau, fidèlement restauré et dressé sur son îlot rocheux, emblème charismatique de cette baie, se tient juste à côté de l’Ile Louet et sa maison.\n L’Ile Callot, la plus grande île de la baie, est accessible quelques heures par jour à pied, à marée basse.\nLes plages de sable fin, falaises et pointes permettent de découvrir à 360° ce paysage hors du commun.\nLa rivière de Morlaix quant à elle cache de vrais trésors architecturaux : belles villas, châteaux… jusqu’au viaduc de Morlaix.",
+    "addressLocality" : "Morlaix",
+    "postalCode" : "29600",
+    "longitude" : -3.902893,
+    "latitude" : 48.7009313,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.902893,
+            48.7009313
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581963"),
+    "dc:identifier" : "FMABRE000V51KITF",
+    "types" : [
+        "schema:Event",
+        "schema:Festival",
+        "schema:MusicEvent",
+        "Concert",
+        "CulturalEvent",
+        "EntertainmentAndEvent",
+        "Festival",
+        "PointOfInterest"
+    ],
+    "label" : "Concert de Noël: Le Trio Normand",
+    "shortDescription" : "Concert et fête de Noël",
+    "email" : "contact@lechantdelaterre-camors.fr",
+    "telephone1" : "+33 6 74 71 50 61",
+    "web" : "https://www.lechantdelaterre-camors.fr/concerts/",
+    "addressLocality" : "Camors",
+    "postalCode" : "56330",
+    "longitude" : -3.0145436,
+    "latitude" : 47.8463667,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.0145436,
+            47.8463667
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581964"),
+    "dc:identifier" : "HOTBRE022FS002SL",
+    "types" : [
+        "schema:Accommodation",
+        "schema:FoodEstablishment",
+        "schema:Hotel",
+        "schema:LodgingBusiness",
+        "schema:Restaurant",
+        "Accommodation",
+        "FoodEstablishment",
+        "Hotel",
+        "HotelRestaurant",
+        "HotelTrade",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "Restaurant"
+    ],
+    "label" : "Hôtel Bar Le Clos Laurentais",
+    "telephone1" : "+33 2 96 45 21 68",
+    "addressLocality" : "Plérin",
+    "postalCode" : "22190",
+    "longitude" : -2.770404,
+    "latitude" : 48.534928,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.770404,
+            48.534928
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581965"),
+    "dc:identifier" : "PNABRE022FS0001R",
+    "types" : [
+        "schema:Landform",
+        "NaturalHeritage",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Arbre remarquable - If séculaire",
+    "shortDescription" : "dans le cimetière, se dresse un if séculaire",
+    "addressLocality" : "Ruca",
+    "postalCode" : "22550",
+    "longitude" : -2.3414826,
+    "latitude" : 48.5669097,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.3414826,
+            48.5669097
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581966"),
+    "dc:identifier" : "ASCBRE029V52YNV4",
+    "types" : [
+        "schema:Product",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "Product",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Rouault Marche Nordique",
+    "shortDescription" : "Habitant la région de Quimperlé depuis une trentaine d'années, j'ai découvert la marche nordique en 2020 et ne peux depuis plus m'en passer !\nJe vous propose que nous allions marcher ensemble ! Je marche en moyenne à 6km/h mais aimerais également proposer des randos d'initiation, à un rythme beaucoup plus modéré.\nJe vous invite à aller marcher :\n- le samedi après-midi / niveau : facile\n- le dimanche après-midi / niveau : confirmé\nPrévoyez des bâtons de marche et des bonnes chaussures de marche.",
+    "telephone1" : "+33 7 62 27 22 79",
+    "web" : "https://marcheaquimperle.wixsite.com/marchenordique",
+    "addressLocality" : "Quimperlé",
+    "postalCode" : "29300",
+    "longitude" : -3.55847,
+    "latitude" : 47.86849,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.55847,
+            47.86849
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581967"),
+    "dc:identifier" : "LOIBRE022V53Z7S6",
+    "types" : [
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Avel Arvor - Espace bien être privatif - Ma bulle balnéo",
+    "shortDescription" : "Notre SPA privatif est un concept novateur ! Espace de fitness, de nage et de détente pour une bulle zen et tonique. L'endroit dont vous rêviez pour faire du sport comme vous voulez, nager ou vous détendre, en toute intimité. Il est possible de réserver en solo, mais aussi entre amis (jusqu'à 4 pers. max) sur des plages de 2 à 3h selon vos envies.",
+    "email" : "contact@spa-detente-paimpol.fr",
+    "telephone1" : "+33 7 89 23 51 43",
+    "web" : "http://www.spa-detente-paimpol.fr/",
+    "addressLocality" : "Plouézec",
+    "postalCode" : "22470",
+    "longitude" : -2.9495805,
+    "latitude" : 48.7410085,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.9495805,
+            48.7410085
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581968"),
+    "dc:identifier" : "1cad92b0-2bb7-4268-bfc9-bc4a0eac78c6",
+    "types" : [
+        "schema:FoodEstablishment",
+        "FoodEstablishment",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Restaurant Le Café Clara",
+    "shortDescription" : "Buffet de fruits de mer face à l'Océan, en terrasse ou dans un canapé, toutes les saveurs des produits locaux, à volonté, pour 42€/pers : langoustines, huîtres, crevettes, le plat du jour, les salades 100% bio, fromage et le succulent buffet de desserts.Restaurant Maitre-restaurateur de FranceHors saison : petit déjeuner et déjeuner 7 jours / 7En haute saison, diner également. Réservation conseillée",
+    "telephone1" : "+33 2 97 31 84 21",
+    "web" : "http://www.castel-clara.com/",
+    "reducedMobilityAccess" : true,
+    "addressLocality" : "Bangor",
+    "postalCode" : "56360",
+    "longitude" : -3.227047,
+    "latitude" : 47.30466,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.227047,
+            47.30466
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b0581969"),
+    "dc:identifier" : "0f63d489-5cf4-4b3a-bbe6-8af2ee9a7c77",
+    "types" : [
+        "ArcheologicalSite",
+        "CulturalSite",
+        "MegalithDolmenMenhir",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Menhir de Kermaillard",
+    "shortDescription" : "Le menhir de Kermaillard est visible de la route du Net allant au rond-point des routes Port Navalo à Saint Gildas. Ce beau monolithe en granite est orné d'un décor bien conservé sur sa surface plane qui fut longtemps ensevelie. Une petite hache emmanchée, un cartouche carré et un grand croissant renverraient a la fin du Néolithique.",
+    "reducedMobilityAccess" : false,
+    "addressLocality" : "Sarzeau",
+    "postalCode" : "56370",
+    "longitude" : -2.84502,
+    "latitude" : 47.54062,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.84502,
+            47.54062
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058196a"),
+    "dc:identifier" : "LOIBRE029FS0004C",
+    "types" : [
+        "schema:MovieTheater",
+        "Cinema",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Cinéma Etoile",
+    "shortDescription" : "Toute l'année, le cinéma Etoile vous ouvre les portes du 7ème art à Carantec ! Classé art et essai, ce cinéma au fonctionnement associatif vous propose des séances régulières tout public ainsi qu'une programmation régulière de films jeune public. Egalement des animations ponctuelles et en période de vacances scolaires. \n\nmercredi à 20H30\njeudi à 14h30 et 20h45\nvendredi à 14h30 ou 17h\nvendredi et samedi à 20h30\ndimanche à 17H00\nun dimanche sur deux : séance jeune public à 10h30\nEn juillet et août, tous les jours à 21H00 sauf le mardi (relâche)\nFermeture annuelle 3 semaines en juin. \n\nTarif plein : 7,50 €\nTarif réduit et abonnés : 5 € \nTarif unique le jeudi après-midi et le dimanche matin : 4 € (sauf juillet et août ).\nCarte d'adhérent nominative : 14 €.\nCarte rechargeable 5 entrées, 10 entrées et plus : 6€ la place",
+    "email" : "etoilecine@gmail.com",
+    "telephone1" : "+33 2 98 78 30 49",
+    "web" : "http://www.cinema-etoile-carantec.fr/",
+    "addressLocality" : "Carantec",
+    "postalCode" : "29660",
+    "longitude" : -3.9129759,
+    "latitude" : 48.6674955,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -3.9129759,
+            48.6674955
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058196b"),
+    "dc:identifier" : "537ebec5-18ae-40db-abba-4c27f43c0546",
+    "types" : [
+        "schema:FoodEstablishment",
+        "schema:Restaurant",
+        "FoodEstablishment",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "Restaurant"
+    ],
+    "label" : "Restaurant L'Armoricain",
+    "shortDescription" : "Spécialités de la mer : poisson, crabe farci, brochettes océanes, choucroute de la mer, fondue de poisson. Moules et anguilles en saison. En juillet et août, ouvert tous les jours",
+    "email" : "restaurantarmoricain@wanadoo.fr",
+    "telephone1" : "+33 2 99 90 38 90",
+    "telephone2" : "+33 6 82 08 65 32",
+    "reducedMobilityAccess" : false,
+    "addressLocality" : "Pénestin",
+    "postalCode" : "56760",
+    "longitude" : -2.474717,
+    "latitude" : 47.48349,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.474717,
+            47.48349
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058196c"),
+    "dc:identifier" : "VILBRE029FS00019",
+    "types" : [
+        "schema:Accommodation",
+        "schema:LodgingBusiness",
+        "Accommodation",
+        "ClubOrHolidayVillage",
+        "CollectiveAccommodation",
+        "PlaceOfInterest",
+        "PointOfInterest"
+    ],
+    "label" : "Centre Nature Bon Vent - Rêves de Mer",
+    "shortDescription" : "Villages Vacances / Auberges de Jeunesse",
+    "email" : "bonvent@revesdemer.com",
+    "telephone1" : "+33 2 98 29 74 98",
+    "web" : "https://www.revesdemer.com/event/nos-etablissements/centre-dhebergement-bon-vent/",
+    "addressLocality" : "Santec",
+    "postalCode" : "29250",
+    "longitude" : -4.0527272,
+    "latitude" : 48.6946575,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -4.0527272,
+            48.6946575
+        ]
+    }
+},
+{
+    "_id" : ObjectId("659bd1e296a26bf4b058196d"),
+    "dc:identifier" : "ASCBRE035V51RPMD",
+    "types" : [
+        "schema:Product",
+        "PlaceOfInterest",
+        "PointOfInterest",
+        "Product",
+        "SportsAndLeisurePlace"
+    ],
+    "label" : "Le Monde de Médèle - Contes aux 4 vents",
+    "shortDescription" : "Katia Bessette, souffleuse de mots vous racontera des histoires de tous horizons, d’ici et du lointain…",
+    "email" : "medelkat@yahoo.fr",
+    "telephone1" : "+33 6 72 81 03 19",
+    "addressLocality" : "Paimpont",
+    "postalCode" : "35380",
+    "longitude" : -2.178165,
+    "latitude" : 48.01909,
+    "location" : {
+        "type" : "Point",
+        "coordinates" : [
+            -2.178165,
+            48.01909
+        ]
+    }
+}
+]
